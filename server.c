@@ -60,7 +60,7 @@ int main(){
     printf("recv() error\n");
     exit(1);
     }
-    buf[buf_len-1]='\0';
+    buf[buf_len]='\0';
 
     printf("Client Message: %s\n",buf);
     close(connectfd);
