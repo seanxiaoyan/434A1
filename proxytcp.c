@@ -34,19 +34,11 @@ int main(int argc, char *argv[]){
         printf("gethostbyname()error\n");
         exit(1);
     }
-    memset(&server, 0, sizeof(server));
+    
     memset(&proxy, 0, sizeof(proxy));
-    server.sin_family=AF_INET;
-    server.sin_port=htons(PORT_SERVER);
-    server.sin_addr =*((struct in_addr *)host->h_addr);
     proxy.sin_family=AF_INET;
     proxy.sin_port=htons(PORT_PROXY);
     proxy.sin_addr.s_addr= htonl (INADDR_ANY);
-
-    if((serverfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-        perror("Creating  server socket failed.");
-        exit(1);
-    }
     if((proxyfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
         perror("Creating  proxy socket failed.");
         exit(1);
@@ -66,6 +58,14 @@ int main(int argc, char *argv[]){
     }
 
     while(1){
+        memset(&server, 0, sizeof(server));
+        server.sin_family=AF_INET;
+        server.sin_port=htons(PORT_SERVER);
+        server.sin_addr =*((struct in_addr *)host->h_addr);
+        if((serverfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
+            perror("Creating  server socket failed.");
+            exit(1);
+        }
         memset(buf_server,0,MAXDATASIZE);
         memset(buf_proxy,0,MAXDATASIZE);
         if((clientfd = accept(proxyfd,(struct sockaddr*)&client,&addrlen))==-1) {
@@ -91,6 +91,8 @@ int main(int argc, char *argv[]){
         }
         
         send(clientfd,buf_server,strlen(buf_server),0);
+        close(serverfd);
+        close(clientfd);
         
     }
     return 0;
