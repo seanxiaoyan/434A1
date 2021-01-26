@@ -65,11 +65,6 @@ int main(){
 
         send(connectfd,buf,buf_len,0);
         close(connectfd);
-
-        if (strcmp(buf,"quit")==0){
-            close(socketfd);
-            break;
-        }
     }
     return 0;
 }

@@ -57,6 +57,8 @@ int main(int argc, char *argv[]){
             case -1:
             printf("invalid day\n");
             break;
+            case 0:
+            flag = 1;
             default:
             strcpy(msg,buffer);
 
@@ -85,22 +87,13 @@ int main(int argc, char *argv[]){
             }
             len = strlen(msg);
             send(socketfd, msg, len, 0);
-           
-            if (strcmp(msg,"quit")==0){
-                flag=1;
-                close(socketfd);
-                
+            if((num=recv(socketfd,buf,MAXDATASIZE,0)) == -1){
+                printf("recv() error\n");
+                exit(1);
             }
-            else{
-                if((num=recv(socketfd,buf,MAXDATASIZE,0)) == -1){
-                    printf("recv() error\n");
-                    exit(1);
-                }
-                buf[num]='\0';
-                printf("Message from server: %s\n",buf);
-                close(socketfd);
-            }
-            
+            buf[num]='\0';
+            printf("Message from server: %s\n",buf);
+            close(socketfd);                  
         }
         if(flag==1){break;}
     }
