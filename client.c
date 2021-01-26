@@ -13,7 +13,7 @@ NSID: xix799
 #include <netinet/in.h>
 #include <netdb.h>
 
-#define  MAXDATASIZE 100
+#define  MAXDATASIZE 300
 #define INPUTSIZE 20
 
 void getInput(char *buffer){
@@ -26,21 +26,22 @@ void getInput(char *buffer){
 }
 
 int validateInput(char *buffer){
-    int flag = -1;
+    int val = -1;
     if ((strcmp(buffer,"Monday") == 0)||
     (strcmp(buffer,"Wednesday") == 0)||
     (strcmp(buffer,"Thursday") == 0)||
     (strcmp(buffer,"Friday") == 0)||
     (strcmp(buffer,"Tuesday") == 0)||
     (strcmp(buffer,"Saturday") == 0)||
-    (strcmp(buffer,"Sunday") == 0))
+    (strcmp(buffer,"Sunday") == 0)||
+    (strcmp(buffer,"all") == 0))
     {
-        flag = 1;
+        val = 1;
     }
     else if (strcmp(buffer,"quit") == 0){
-        flag = 0;
+        val = 0;
     }
-    return flag;
+    return val;
 }
  
 int main(int argc, char *argv[]){
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]){
     char msg[INPUTSIZE];
     flag = 0;
     while(1){
+        memset(buffer,0,INPUTSIZE);
+        memset(buf,0,MAXDATASIZE);
         getInput(buffer);
         switch (validateInput(buffer)){
             case -1:
@@ -93,7 +96,7 @@ int main(int argc, char *argv[]){
                 exit(1);
             }
             buf[num]='\0';
-            printf("Message from server: %s\n",buf);
+            printf("%s",buf);
             close(socketfd);                  
         }
         if(flag==1){break;}

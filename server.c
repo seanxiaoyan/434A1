@@ -18,25 +18,25 @@ NSID: xix799
 #define  MAXDATASIZE 100
 void getWeather(char* day, char* info_buffer){
     if(strcmp(day,"Monday")==0){
-        strcpy(info_buffer,"20 degree, cloudy");
+        strcpy(info_buffer,"20 degree, cloudy\n");
     }
     if(strcmp(day,"Tuesday")==0){
-        strcpy(info_buffer,"22 degree, Sunnny");
+        strcpy(info_buffer,"22 degree, Sunnny\n");
     }
     if(strcmp(day,"Wednesday")==0){
-        strcpy(info_buffer,"24 degree, Rainy");
+        strcpy(info_buffer,"24 degree, Rainy\n");
     }
     if(strcmp(day,"Thursday")==0){
-        strcpy(info_buffer,"25 degree, Sunny");
+        strcpy(info_buffer,"25 degree, Sunny\n");
     }
     if(strcmp(day,"Friday")==0){
-        strcpy(info_buffer,"27 degree, Snow");
+        strcpy(info_buffer,"27 degree, Snow\n");
     }
     if(strcmp(day,"Saturday")==0){
-        strcpy(info_buffer,"29 degree, cold");
+        strcpy(info_buffer,"29 degree, cold\n");
     }
     if(strcmp(day,"Sunday")==0){
-        strcpy(info_buffer,"10 degree, Rainy");
+        strcpy(info_buffer,"10 degree, Rainy\n");
     }
     info_buffer[strlen(info_buffer)]='\0';
 }
@@ -86,6 +86,7 @@ int main(){
         exit(1);
         }
         buf[buf_len]='\0';
+        printf("buffer from proxy is: %s\n",buf);
         getWeather(buf,weather_info);
        
         send(connectfd,weather_info,strlen(weather_info),0);
