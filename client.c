@@ -59,6 +59,7 @@ int main(int argc, char *argv[]){
             break;
             case 0:
             flag = 1;
+            break;
             default:
             strcpy(msg,buffer);
 

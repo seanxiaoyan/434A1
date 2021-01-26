@@ -16,13 +16,37 @@ NSID: xix799
 #define  PORT 31234
 #define  BACKLOG 10
 #define  MAXDATASIZE 100
-
+void getWeather(char* day, char* info_buffer){
+    if(strcmp(day,"Monday")==0){
+        strcpy(info_buffer,"20 degree, cloudy");
+    }
+    if(strcmp(day,"Tuesday")==0){
+        strcpy(info_buffer,"22 degree, Sunnny");
+    }
+    if(strcmp(day,"Wednesday")==0){
+        strcpy(info_buffer,"24 degree, Rainy");
+    }
+    if(strcmp(day,"Thursday")==0){
+        strcpy(info_buffer,"25 degree, Sunny");
+    }
+    if(strcmp(day,"Friday")==0){
+        strcpy(info_buffer,"27 degree, Snow");
+    }
+    if(strcmp(day,"Saturday")==0){
+        strcpy(info_buffer,"29 degree, cold");
+    }
+    if(strcmp(day,"Sunday")==0){
+        strcpy(info_buffer,"10 degree, Rainy");
+    }
+    info_buffer[strlen(info_buffer)]='\0';
+}
 int main(){
     int  socketfd, connectfd, buf_len;
     struct  sockaddr_in server;
     struct  sockaddr_in client;
     socklen_t  addrlen;
     char  buf[MAXDATASIZE];
+    char weather_info[MAXDATASIZE];
 
     int opt =1;
     addrlen =sizeof(client);
@@ -62,8 +86,9 @@ int main(){
         exit(1);
         }
         buf[buf_len]='\0';
-
-        send(connectfd,buf,buf_len,0);
+        getWeather(buf,weather_info);
+       
+        send(connectfd,weather_info,strlen(weather_info),0);
         close(connectfd);
     }
     return 0;
