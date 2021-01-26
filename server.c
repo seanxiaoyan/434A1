@@ -49,21 +49,27 @@ int main(){
         perror("listen failed\n");
         exit(1);
     }
-    if((connectfd = accept(socketfd,(struct sockaddr*)&client,&addrlen))==-1) {
-        perror("accept()error\n");
+
+    while(1){
+        if((connectfd = accept(socketfd,(struct sockaddr*)&client,&addrlen))==-1) {
+            perror("accept()error\n");
+            exit(1);
+        }
+        printf("Got a connection from client ip %s, prot %d\n",inet_ntoa(client.sin_addr),htons(client.sin_port));
+
+        if((buf_len = recv(connectfd,buf,MAXDATASIZE,0)) == -1){
+        printf("recv() error\n");
         exit(1);
-    }
-    printf("You got a connection from cient's ip %s, prot is %d\n",inet_ntoa(client.sin_addr),htons(client.sin_port));
-    send(connectfd,"Welcometo my server.\n",22,0);
+        }
+        buf[buf_len]='\0';
 
-    if((buf_len = recv(connectfd,buf,MAXDATASIZE,0)) == -1){
-    printf("recv() error\n");
-    exit(1);
-    }
-    buf[buf_len]='\0';
+        send(connectfd,buf,buf_len,0);
+        close(connectfd);
 
-    printf("Client Message: %s\n",buf);
-    close(connectfd);
-    close(socketfd);
+        if (strcmp(buf,"quit")==0){
+            close(socketfd);
+            break;
+        }
+    }
     return 0;
 }

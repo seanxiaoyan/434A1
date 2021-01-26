@@ -44,22 +44,18 @@ int validateInput(char *buffer){
 }
  
 int main(int argc, char *argv[]){
-    int  socketfd, num, len, PORT;
+    int  socketfd, num, len, PORT, flag;
     char  buf[MAXDATASIZE];
     char buffer[INPUTSIZE];
     struct hostent *host;
     struct sockaddr_in server;
     char msg[INPUTSIZE];
-    
+    flag = 0;
     while(1){
         getInput(buffer);
         switch (validateInput(buffer)){
             case -1:
             printf("invalid day\n");
-            break;
-            case 0:
-            printf("quit\n");
-            exit(0);
             break;
             default:
             strcpy(msg,buffer);
@@ -89,16 +85,24 @@ int main(int argc, char *argv[]){
             }
             len = strlen(msg);
             send(socketfd, msg, len, 0);
-            if((num=recv(socketfd,buf,MAXDATASIZE,0)) == -1){
-            printf("recv() error\n");
-            exit(1);
+           
+            if (strcmp(msg,"quit")==0){
+                flag=1;
+                close(socketfd);
+                
             }
-            buf[num]='\0';
-            printf("Message from server: %s\n",buf);
-            close(socketfd);
+            else{
+                if((num=recv(socketfd,buf,MAXDATASIZE,0)) == -1){
+                    printf("recv() error\n");
+                    exit(1);
+                }
+                buf[num]='\0';
+                printf("Message from server: %s\n",buf);
+                close(socketfd);
+            }
+            
         }
+        if(flag==1){break;}
     }
-
-
     return 0;
 }
