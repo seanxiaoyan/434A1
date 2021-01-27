@@ -70,6 +70,16 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
+    memset(&server, 0, sizeof(server));
+    server.sin_family= AF_INET;
+    server.sin_port = htons(PORT);
+    server.sin_addr =*((struct in_addr *)host->h_addr);
+
+    if((socketfd=socket(AF_INET, SOCK_DGRAM, 0))==-1){
+        printf("socket()error\n");
+        exit(1);
+    }
+
     while(1){
         memset(buffer,0,INPUTSIZE);
         memset(buf,0,MAXDATASIZE);
@@ -84,16 +94,6 @@ int main(int argc, char *argv[]){
             default:
             strcpy(msg,buffer);
 
-            memset(&server, 0, sizeof(server));
-            server.sin_family= AF_INET;
-            server.sin_port = htons(PORT);
-            server.sin_addr =*((struct in_addr *)host->h_addr);
-
-            if((socketfd=socket(AF_INET, SOCK_DGRAM, 0))==-1){
-                printf("socket()error\n");
-                exit(1);
-            }
-
             len = strlen(msg);
             sendto(socketfd, msg, len, 0, (struct sockaddr*)&server, sizeof(server));
             if((num=recvfrom(socketfd,buf,MAXDATASIZE,0, (struct sockaddr*)&server, &addrlen)) == -1){
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]){
             printf("%s",buf);                 
         }
         if(flag==1){break;}
-        close(socketfd); 
     }
+    close(socketfd); 
     return 0;
 }
