@@ -19,7 +19,19 @@ proxytcp: proxytcp.o
 	$(CC) -o proxytcp proxytcp.o
 proxytcp.o: proxytcp.c
 	$(CC) -o proxytcp.o -c $(CFLAGS) $(CPPFLAGS) proxytcp.c
+serverudp: serverudp.o
+	$(CC) -o serverudp serverudp.o
+serverudp.o: serverudp.c
+	$(CC) -o serverudp.o -c $(CFLAGS) $(CPPFLAGS) serverudp.c
+clientudp: clientudp.o
+	$(CC) -o clientudp clientudp.o
+clientudp.o: clientudp.c
+	$(CC) -o clientudp.o -c $(CFLAGS) $(CPPFLAGS) clientdup.c
+proxytcp: proxyudp.o
+	$(CC) -o proxyudp proxyudp.o
+proxyudp.o: proxyudp.c
+	$(CC) -o proxyudp.o -c $(CFLAGS) $(CPPFLAGS) proxyudp.c
 
 .PHONY: clean
 clean: 
-	rm -f servertcp.o clienttcp.o proxytcp.o servertcp clienttcp proxytcp
+	rm -f servertcp.o clienttcp.o proxytcp.o serverudp.o clientdup.o servertcp clienttcp proxytcp serverudp clientudp
