@@ -6,7 +6,7 @@ CC=gcc
 CFLAGS=-g
 CPPFLAGS= -std=gnu90 -Wall -pedantic
 
-build: servertcp clienttcp proxytcp
+build: serverudp clientudp
 servertcp: servertcp.o
 	$(CC) -o servertcp servertcp.o
 servertcp.o: servertcp.c
@@ -26,12 +26,12 @@ serverudp.o: serverudp.c
 clientudp: clientudp.o
 	$(CC) -o clientudp clientudp.o
 clientudp.o: clientudp.c
-	$(CC) -o clientudp.o -c $(CFLAGS) $(CPPFLAGS) clientdup.c
-proxytcp: proxyudp.o
+	$(CC) -o clientudp.o -c $(CFLAGS) $(CPPFLAGS) clientudp.c
+proxyudp: proxyudp.o
 	$(CC) -o proxyudp proxyudp.o
 proxyudp.o: proxyudp.c
 	$(CC) -o proxyudp.o -c $(CFLAGS) $(CPPFLAGS) proxyudp.c
 
 .PHONY: clean
 clean: 
-	rm -f servertcp.o clienttcp.o proxytcp.o serverudp.o clientdup.o servertcp clienttcp proxytcp serverudp clientudp
+	rm -f servertcp.o clienttcp.o proxytcp.o serverudp.o clientudp.o servertcp clienttcp proxytcp serverudp clientudp
